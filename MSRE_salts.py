@@ -4,6 +4,26 @@
 Created on Mon Feb 15 09:40:31 2021
 
 @author: martin
+
+
+# This script converts the imperial units for fuel salt and coolant salt of 
+# the MSRE into metric units. Parameters are taken from (bibtex):
+    
+@article{osti_4676587,
+title = {MOLTEN-SALT REACTOR PROGRAM SEMIANNUAL PROGRESS REPORT FOR PERIOD ENDING JULY 31, 1964},
+author = {Briggs, R. B.},
+abstractNote = {},
+doi = {10.2172/4676587},
+url = {https://www.osti.gov/biblio/4676587}, journal = {},
+number = ,
+volume = ,
+place = {United States},
+year = {1964},
+month = {11}
+} 
+
+found here (https://www.osti.gov/biblio/4676587-molten-salt-reactor-program-semiannual-progress-report-period-ending-july)
+or here (https://energyfromthorium.com/pdf/ORNL-3708.pdf)
 """
 
 class Constants():
