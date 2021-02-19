@@ -8,11 +8,12 @@ Created on Fri Jan 22 21:35:04 2021
 
 import numpy as np
 
-# T1 / K ... nuclide temperature for doppler effect in all materials (fuel salt, graphite and steel). 
+# T0 / K ... nuclide temperature for doppler effect in fuel salt
+# T1 / K ... nuclide temperature for doppler effect in all other materials (graphite and steel). 
 # T2 / K ... used for thermal expansion and density change of graphite
 # T3 / K ... used for thermal expansion and density change of steel (hastalloy)
 # T4 / K ... used for density change in fuel salt (excess gets automatically expelled from the core, decreasing the total fuel in the core when heated)
-def GetInputStr(T1,T2,T3,T4):
+def GetInputStr(T0,T1,T2,T3,T4):
     graphite_length_scale_factor = np.exp(5.52E-6*(T2-273.15)+0.001E-6/2*(T2-273.15)**2)
     steel_length_scale_factor = 1 + 15E-6*(T3-273.15-21)
     fuel_length_scale_factor = 1 + 78E-6*(T4-648.88-273.15) # reference density given at 1200 F
@@ -64,7 +65,7 @@ cell 23 1 outside -3
 %% --- problem materials
 % --- Fuel ( Partially enriched uranium ):
 % 1200 F, pg. 17 MSRE Design and Operations , part iii , nuclear analysis
-mat fuel {:.5f} tmp {:.5f} rgb 0 100 100""".format(-2.146*fuel_density_scale_factor,T1) + """
+mat fuel {:.5f} tmp {:.5f} rgb 0 100 100""".format(-2.146*fuel_density_scale_factor,T0) + """
 3007.09c -10.90
 3006.09c -0.0005
 9019.09c -66.80
