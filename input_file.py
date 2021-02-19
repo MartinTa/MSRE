@@ -347,10 +347,11 @@ branch rod4 tra CR1 TR5
     return input_file_str
 
 if __name__ == "__main__":
-    T1 = 922       # K # 273.15 #
-    T2 = T1 # 273.15    # K
-    T3 = T1 # 273.15+21 # K
-    T4 = T1 # 273.15    # K
-    input_file_str = GetInputStr(T1,T2,T3,T4)
-    with open('input_file_T1={:.2f}K_T2={:.2f}K_T3={:.2f}K_T4={:.2f}K'.format(T1,T2,T3,T4),'w') as f:
+    T0 = 922
+    T1 = T0       # K # 273.15 #
+    T2 = T0 # 273.15    # K
+    T3 = T0 # 273.15+21 # K
+    T4 = T0 # 273.15    # K
+    input_file_str = GetInputStr(T0,T1,T2,T3,T4)
+    with open('input_file_T0={:.2f}_T1={:.2f}K_T2={:.2f}K_T3={:.2f}K_T4={:.2f}K'.format(T0,T1,T2,T3,T4),'w') as f:
         f.write(input_file_str)
