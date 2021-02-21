@@ -7,13 +7,13 @@ Created on Fri Jan 22 21:35:04 2021
 """
 
 import numpy as np
+import os
 
-# T0 / K ... nuclide temperature for doppler effect in fuel salt
-# T1 / K ... nuclide temperature for doppler effect in all other materials (graphite and steel). 
+# T1 / K ... nuclide temperature for doppler effect in all materials (fuel salt, graphite and steel). 
 # T2 / K ... used for thermal expansion and density change of graphite
 # T3 / K ... used for thermal expansion and density change of steel (hastalloy)
 # T4 / K ... used for density change in fuel salt (excess gets automatically expelled from the core, decreasing the total fuel in the core when heated)
-def GetInputStr(T0,T1,T2,T3,T4):
+def GetInputStr(T1,T2,T3,T4):
     graphite_length_scale_factor = np.exp(5.52E-6*(T2-273.15)+0.001E-6/2*(T2-273.15)**2)
     steel_length_scale_factor = 1 + 15E-6*(T3-273.15-21)
     fuel_length_scale_factor = 1 + 78E-6*(T4-648.88-273.15) # reference density given at 1200 F
@@ -65,7 +65,7 @@ cell 23 1 outside -3
 %% --- problem materials
 % --- Fuel ( Partially enriched uranium ):
 % 1200 F, pg. 17 MSRE Design and Operations , part iii , nuclear analysis
-mat fuel {:.5f} tmp {:.5f} rgb 0 100 100""".format(-2.146*fuel_density_scale_factor,T0) + """
+mat fuel {:.5f} tmp {:.5f} rgb 0 100 100""".format(-2.146*fuel_density_scale_factor,T1) + """
 3007.09c -10.90
 3006.09c -0.0005
 9019.09c -66.80
@@ -172,6 +172,7 @@ surf 2997 cyl 0.0 0.0 {:.5f} % vessel ID""".format(73.66*steel_length_scale_fact
 surf 2996 cyl 0.0 0.0 {:.5f} % vessel OD""".format(75.08875*steel_length_scale_factor) + """
 surf 2995 sph 0.0 0.0 0 {:.5f} % vessel lid ID, rough geometry""".format(109.6915*steel_length_scale_factor) + """
 surf 2994 sph 0.0 0.0 0 {:.5f} % vessel lid OD, rough geometry""".format(110.6560*steel_length_scale_factor) + """
+surf 2993 sph 0.0 0.0 0 {:.5f} % dummy outer surface """.format(220*steel_length_scale_factor) + """
 surf 3001 pz {:.5f}""".format(-81.28*steel_length_scale_factor) + """
 surf 3002 pz {:.5f}""".format(81.28*steel_length_scale_factor) + """
 surf 3003 pz {:.5f}""".format(-80.645*graphite_length_scale_factor) + """
@@ -275,8 +276,9 @@ cell 297 0 fill 2 2998 -2997 3001 -3002 % downcomer
 cell 296 0 fill 4 2997 -2996 3001 -3002 % reactor vessel
 cell 295 0 fill 4 2995 -2994 3002 % upper vessel lid7
 cell 29 0 fill 4 2995 -2994 -3001 % upper vessel lid
-cell 403 0 outside 2994
+cell 403 0 outside 2994 -2993
 cell 301 0 outside 2996 -2994
+cell 999 0 outside 2993
 %cell 600 0 outside 2994
 
 % --- Cross section data library file path :
@@ -295,7 +297,7 @@ set nfg 4 7.3000e-7 2.9023e-5 9.1188e-3
 % set nfg 4 1.8554e-6 2.9023e-5 9.1188e-3
 
 % --- Neutron population and criticality cycles :
-set pop 5000 10 5 %50000 600 100
+set pop 5000 500 50 %50000 600 100
 
 % --- Geometry and mesh plots :
 plot 1 1500 1500
@@ -343,15 +345,35 @@ branch rod4 tra CR1 TR5
 %coef 1
 %0
 %15 fuel0 fuel1 fuel2 fuel3 fuel4 fuel5 fuel6 fuel7 fuel8 fuel9 fuel10 fuel11 fuel12 fuel13 fuel14
-%5 rod0 rod1 rod2 rod3 rod4"""
+%5 rod0 rod1 rod2 rod3 rod4
+
+% --- Detector for tallying the flux energy spectrum
+%     The energy grid used for tallying will be defined later
+
+det EnergyDetector de MyEnergyGrid
+
+% --- Define the energy grid to be used with the detector
+%     Grid type 3 (bins have uniform lethargy width)
+%     500 bins between 1e-11 MeV and 2e1 MeV.
+
+ene MyEnergyGrid 3 500 1e-11 2e1
+
+set bc 1
+"""
     return input_file_str
 
+def RunSerpent(file_name):
+    os.system('nohup /codes/SERPENT/sss2 -opm 3 {} > {} &'.format(file_name,file_name+'.o'))
+
+
 if __name__ == "__main__":
-    T0 = 922
-    T1 = T0       # K # 273.15 #
-    T2 = T0 # 273.15    # K
-    T3 = T0 # 273.15+21 # K
-    T4 = T0 # 273.15    # K
-    input_file_str = GetInputStr(T0,T1,T2,T3,T4)
-    with open('input_file_T0={:.2f}_T1={:.2f}K_T2={:.2f}K_T3={:.2f}K_T4={:.2f}K'.format(T0,T1,T2,T3,T4),'w') as f:
+    T1 = 922       # K # 273.15 #
+    T2 = T1 # 273.15    # K
+    T3 = T1 # 273.15+21 # K
+    T4 = T1 # 273.15    # K
+    input_file_str = GetInputStr(T1,T2,T3,T4)
+    file_name = 'input_file_T1={:.2f}K_T2={:.2f}K_T3={:.2f}K_T4={:.2f}K'.format(T1,T2,T3,T4)
+    with open(file_name,'w') as f:
         f.write(input_file_str)
+    # RunSerpent(file_name)
+    
