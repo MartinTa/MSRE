@@ -9,6 +9,9 @@ Created on Fri Jan 22 21:35:04 2021
 import numpy as np
 import os
 
+def GetTemperatureMarker(T): # produces from e.g. T = 599 the string 03 and from T = 600 the string 06
+    return '{:02d}'.format((T//300)*3)
+
 # T0 / K ... nuclide temperature for doppler effect in fuel salt
 # T1 / K ... nuclide temperature for doppler effect in all other materials (graphite and steel). 
 # T2 / K ... used for thermal expansion and density change of graphite
@@ -22,6 +25,9 @@ def GetInputStr(T0,T1,T2,T3,T4):
     graphite_density_scale_factor = 1/graphite_length_scale_factor**3
     steel_density_scale_factor = 1/steel_length_scale_factor**3
     fuel_density_scale_factor = 1/fuel_length_scale_factor**3
+    
+    T0_marker = GetTemperatureMarker(T0)
+    T1_marker = GetTemperatureMarker(T1)
     input_file_str = """% --- MSR cluster ------------------------------------------
 set title "MSR2G - partially - enriched -U-full - core "
 
@@ -67,58 +73,58 @@ cell 23 1 outside -3
 % --- Fuel ( Partially enriched uranium ):
 % 1200 F, pg. 17 MSRE Design and Operations , part iii , nuclear analysis
 mat fuel {:.5f} tmp {:.5f} rgb 0 100 100""".format(-2.146*fuel_density_scale_factor,T0) + """
-3007.09c -10.90
-3006.09c -0.0005
-9019.09c -66.80
-4009.09c -6.27
-40000.09c -10.92
-92235.09c -1.67
-92238.09c -3.44
+3007.{}c -10.90""".format(T0_marker) + """
+3006.{}c -0.0005""".format(T0_marker) + """
+9019.{}c -66.80""".format(T0_marker) + """
+4009.{}c -6.27""".format(T0_marker) + """
+40000.{}c -10.92""".format(T0_marker) + """
+92235.{}c -1.67""".format(T0_marker) + """
+92238.{}c -3.44""".format(T0_marker) + """
 
 % --- Moderator graphite :
 % p. 87 msr operations ( robertson ) part i
 % 1200 F, pg. 17 MSRE Design and Operations , part iii , nuclear analysis
 mat moder {:.5f} tmp {:.5f} rgb 128 128 128 moder grmod 6000""".format(-1.86*graphite_density_scale_factor,T1) + """
-5010.09c -1.592e-5
-5011.09c -6.408e-5
-23000.09c -0.0009
-16000.09c -0.0005
-6000.09c -99.99852
+5010.{}c -1.592e-5""".format(T1_marker) + """
+5011.{}c -6.408e-5""".format(T1_marker) + """
+23000.{}c -0.0009""".format(T1_marker) + """
+16000.{}c -0.0005""".format(T1_marker) + """
+6000.{}c -99.99852""".format(T1_marker) + """
 therm grmod {:.5f} grj2.18t grj2.20t""".format(T1) + """
 % ignoring the oxygen b/c low content and XS
 
 % hastelloy tank
 mat tank {:.5f} tmp {:.5f} rgb 120 120 230""".format(-8.86*steel_density_scale_factor,T1) + """
-14030.09c -0.00030872
-74186.09c -0.0014215
-25055.09c -0.008
-74184.09c -0.001532
-74183.09c -0.0007155
-74182.09c -0.001325
-28058.09c -0.4721201092
-42092.09c -0.023744
-26058.09c -0.000141
-42094.09c -0.0148
-42095.09c -0.025472
-42096.09c -0.026688
-42097.09c -0.01528
-42098.09c -0.038608
-26056.09c -0.045877
-26057.09c -0.0010595
-26054.09c -0.0029225
-42100.09c -0.015408
-14028.09c -0.00922297
-14029.09c -0.00046832
-24050.09c -0.0030415
-24052.09c -0.0586523
-24053.09c -0.0066507
-24054.09c -0.0016555
-29065.09c -0.00107905
-29063.09c -0.00242095
-28064.09c -0.0064191286
-28061.09c -0.0079053205
-28060.09c -0.1818598208
-28062.09c -0.025205621
+14030.{}c -0.00030872""".format(T1_marker) + """
+74186.{}c -0.0014215""".format(T1_marker) + """
+25055.{}c -0.008""".format(T1_marker) + """
+74184.{}c -0.001532""".format(T1_marker) + """
+74183.{}c -0.0007155""".format(T1_marker) + """
+74182.{}c -0.001325""".format(T1_marker) + """
+28058.{}c -0.4721201092""".format(T1_marker) + """
+42092.{}c -0.023744""".format(T1_marker) + """
+26058.{}c -0.000141""".format(T1_marker) + """
+42094.{}c -0.0148""".format(T1_marker) + """
+42095.{}c -0.025472""".format(T1_marker) + """
+42096.{}c -0.026688""".format(T1_marker) + """
+42097.{}c -0.01528""".format(T1_marker) + """
+42098.{}c -0.038608""".format(T1_marker) + """
+26056.{}c -0.045877""".format(T1_marker) + """
+26057.{}c -0.0010595""".format(T1_marker) + """
+26054.{}c -0.0029225""".format(T1_marker) + """
+42100.{}c -0.015408""".format(T1_marker) + """
+14028.{}c -0.00922297""".format(T1_marker) + """
+14029.{}c -0.00046832""".format(T1_marker) + """
+24050.{}c -0.0030415""".format(T1_marker) + """
+24052.{}c -0.0586523""".format(T1_marker) + """
+24053.{}c -0.0066507""".format(T1_marker) + """
+24054.{}c -0.0016555""".format(T1_marker) + """
+29065.{}c -0.00107905""".format(T1_marker) + """
+29063.{}c -0.00242095""".format(T1_marker) + """
+28064.{}c -0.0064191286""".format(T1_marker) + """
+28061.{}c -0.0079053205""".format(T1_marker) + """
+28060.{}c -0.1818598208""".format(T1_marker) + """
+28062.{}c -0.025205621""".format(T1_marker) + """
 
 % control rod absorber material
 % operations report i; p. 102
@@ -298,7 +304,7 @@ set nfg 4 7.3000e-7 2.9023e-5 9.1188e-3
 % set nfg 4 1.8554e-6 2.9023e-5 9.1188e-3
 
 % --- Neutron population and criticality cycles :
-set pop 5000 500 50 %50000 600 100
+set pop 10000 5000 200 %50000 600 100
 
 % --- Geometry and mesh plots :
 plot 1 1500 1500
@@ -364,7 +370,7 @@ set bc 1
     return input_file_str
 
 def RunSerpent(file_name): # currently not useful since this script can not be run on server since numpy is not yet installed there
-    os.system('nohup /codes/SERPENT/sss2 -opm 3 {} > {} &'.format(file_name,file_name+'.o'))
+    os.system('nohup /codes/SERPENT/sss2 -omp 3 {} > {} &'.format(file_name,file_name+'.o'))
 
 def GenerateFile(T0,T1,T2,T3,T4):
     input_file_str = GetInputStr(T0,T1,T2,T3,T4)
@@ -377,10 +383,9 @@ def GenerateFile(T0,T1,T2,T3,T4):
     # RunSerpent(file_name)
 
 if __name__ == "__main__":
-    T0 = 922
+    T0 = 900
     T1 = T0       # K # 273.15 #
     T2 = T0 # 273.15    # K
     T3 = T0 # 273.15+21 # K
     T4 = T0 # 273.15    # K
     GenerateFile(T0,T1,T2,T3,T4)
-    
