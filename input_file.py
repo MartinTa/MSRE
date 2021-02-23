@@ -9,11 +9,12 @@ Created on Fri Jan 22 21:35:04 2021
 import numpy as np
 import os
 
-# T1 / K ... nuclide temperature for doppler effect in all materials (fuel salt, graphite and steel). 
+# T0 / K ... nuclide temperature for doppler effect in fuel salt
+# T1 / K ... nuclide temperature for doppler effect in all other materials (graphite and steel). 
 # T2 / K ... used for thermal expansion and density change of graphite
 # T3 / K ... used for thermal expansion and density change of steel (hastalloy)
 # T4 / K ... used for density change in fuel salt (excess gets automatically expelled from the core, decreasing the total fuel in the core when heated)
-def GetInputStr(T1,T2,T3,T4):
+def GetInputStr(T0,T1,T2,T3,T4):
     graphite_length_scale_factor = np.exp(5.52E-6*(T2-273.15)+0.001E-6/2*(T2-273.15)**2)
     steel_length_scale_factor = 1 + 15E-6*(T3-273.15-21)
     fuel_length_scale_factor = 1 + 78E-6*(T4-648.88-273.15) # reference density given at 1200 F
@@ -65,7 +66,7 @@ cell 23 1 outside -3
 %% --- problem materials
 % --- Fuel ( Partially enriched uranium ):
 % 1200 F, pg. 17 MSRE Design and Operations , part iii , nuclear analysis
-mat fuel {:.5f} tmp {:.5f} rgb 0 100 100""".format(-2.146*fuel_density_scale_factor,T1) + """
+mat fuel {:.5f} tmp {:.5f} rgb 0 100 100""".format(-2.146*fuel_density_scale_factor,T0) + """
 3007.09c -10.90
 3006.09c -0.0005
 9019.09c -66.80
@@ -362,18 +363,24 @@ set bc 1
 """
     return input_file_str
 
-def RunSerpent(file_name):
+def RunSerpent(file_name): # currently not useful since this script can not be run on server since numpy is not yet installed there
     os.system('nohup /codes/SERPENT/sss2 -opm 3 {} > {} &'.format(file_name,file_name+'.o'))
 
-
-if __name__ == "__main__":
-    T1 = 922       # K # 273.15 #
-    T2 = T1 # 273.15    # K
-    T3 = T1 # 273.15+21 # K
-    T4 = T1 # 273.15    # K
-    input_file_str = GetInputStr(T1,T2,T3,T4)
-    file_name = 'input_file_T1={:.2f}K_T2={:.2f}K_T3={:.2f}K_T4={:.2f}K'.format(T1,T2,T3,T4)
-    with open(file_name,'w') as f:
+def GenerateFile(T0,T1,T2,T3,T4):
+    input_file_str = GetInputStr(T0,T1,T2,T3,T4)
+    folder_name = 'serpent_data'
+    file_path = os.path.join(folder_name,'input_file_T0={:.2f}K_T1={:.2f}K_T2={:.2f}K_T3={:.2f}K_T4={:.2f}K.in'.format(T0,T1,T2,T3,T4))
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+    with open(file_path,'w') as f:
         f.write(input_file_str)
     # RunSerpent(file_name)
+
+if __name__ == "__main__":
+    T0 = 922
+    T1 = T0       # K # 273.15 #
+    T2 = T0 # 273.15    # K
+    T3 = T0 # 273.15+21 # K
+    T4 = T0 # 273.15    # K
+    GenerateFile(T0,T1,T2,T3,T4)
     
