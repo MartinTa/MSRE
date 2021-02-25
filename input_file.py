@@ -283,10 +283,11 @@ cell 297 0 fill 2 2998 -2997 3001 -3002 % downcomer
 cell 296 0 fill 4 2997 -2996 3001 -3002 % reactor vessel
 cell 295 0 fill 4 2995 -2994 3002 % upper vessel lid7
 cell 29 0 fill 4 2995 -2994 -3001 % upper vessel lid
+
+%cell 403 0 outside 2994 : 2996 % outside sphere and outside cylinder (union operator :)
 cell 403 0 outside 2994 -2993
 cell 301 0 outside 2996 -2994
 cell 999 0 outside 2993
-%cell 600 0 outside 2994
 
 % --- Cross section data library file path :
 set acelib "/codes/SERPENT/xsdata/endfb7.xsdata" %"endfb7u.xsdata"
@@ -321,41 +322,13 @@ det spectralMod dr 0 moder de eGrid
 
 % graphite is just at one temperature for this
 % therm grmod 922 grj2.18t grj2.20t
-trans u TR1 5.08 5.08 208.0
-trans u TR2 5.08 5.08 161.9055
-trans u TR3 5.08 5.08 115.811
-trans u TR4 5.08 5.08 69.7165
-trans u TR5 5.08 5.08 23.622
-
-% ---- BRANCHES ------------
-branch fuel0 stp fuel -2.2818562220275704 633.0
-branch fuel1 stp fuel -2.2496135461743254 700.0
-branch fuel2 stp fuel -2.2023356233843003 800.0
-branch fuel3 stp fuel -2.1560512943549197 900.0
-branch fuel4 stp fuel -2.1107396777000536 1000.0
-branch fuel5 stp fuel -2.066380330877196 1100.0
-branch fuel6 stp fuel -2.022953240964719 1200.0
-branch fuel7 stp fuel -1.9804388156329515 1300.0
-branch fuel8 stp fuel -1.9388178743050104 1400.0
-branch fuel9 stp fuel -1.8980716395033954 1500.0
-branch fuel10 stp fuel -1.8581817283784454 1600.0
-branch fuel11 stp fuel -1.819130144414831 1700.0
-branch fuel12 stp fuel -1.7808992693123449 1800.0
-branch fuel13 stp fuel -1.7434718550373258 1900.0
-branch fuel14 stp fuel -1.7068310160411293 2000.0
-branch rod0 tra CR1 TR1
-branch rod1 tra CR1 TR2
-branch rod2 tra CR1 TR3
-branch rod3 tra CR1 TR4
-branch rod4 tra CR1 TR5
-
-%coef 1
-%0
-%15 fuel0 fuel1 fuel2 fuel3 fuel4 fuel5 fuel6 fuel7 fuel8 fuel9 fuel10 fuel11 fuel12 fuel13 fuel14
-%5 rod0 rod1 rod2 rod3 rod4
+% trans u TR1 5.08 5.08 208.0
+% trans u TR2 5.08 5.08 161.9055
+% trans u TR3 5.08 5.08 115.811
+% trans u TR4 5.08 5.08 69.7165
+% trans u TR5 5.08 5.08 23.622
 
 % --- Detector for tallying the flux energy spectrum
-%     The energy grid used for tallying will be defined later
 
 det EnergyDetector de MyEnergyGrid
 
@@ -366,15 +339,15 @@ det EnergyDetector de MyEnergyGrid
 ene MyEnergyGrid 3 500 1e-11 2e1
 
 set bc 1
+set his 1
 """
     return input_file_str
 
 def RunSerpent(file_name): # currently not useful since this script can not be run on server since numpy is not yet installed there
     os.system('nohup /codes/SERPENT/sss2 -omp 3 {} > {} &'.format(file_name,file_name+'.o'))
 
-def GenerateFile(T0,T1,T2,T3,T4):
+def GenerateFile(T0,T1,T2,T3,T4,folder_name):
     input_file_str = GetInputStr(T0,T1,T2,T3,T4)
-    folder_name = 'serpent_data'
     file_path = os.path.join(folder_name,'input_file_T0={:.2f}K_T1={:.2f}K_T2={:.2f}K_T3={:.2f}K_T4={:.2f}K.in'.format(T0,T1,T2,T3,T4))
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
@@ -388,4 +361,4 @@ if __name__ == "__main__":
     T2 = T0 # 273.15    # K
     T3 = T0 # 273.15+21 # K
     T4 = T0 # 273.15    # K
-    GenerateFile(T0,T1,T2,T3,T4)
+    GenerateFile(T0,T1,T2,T3,T4,folder_name = 'serpent_data')
