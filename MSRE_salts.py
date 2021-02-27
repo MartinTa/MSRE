@@ -69,6 +69,7 @@ class salt():
         self.heat_capacity_J_per_g_K = ImperialHeatCapacityToJ_per_g_K(heat_capacity_Btu_per_lb_F)
         self.viscosity_mPa_s = viscosity_cP
         self.thermal_conductivity_W_per_m_K = ImperialThermalConductivityTo_W_per_m_K(self.thermal_conductivity_Btu_per_ft_hr_F)
+        self.volumetric_heat_capacity_J_per_cm3_K = self.heat_capacity_J_per_g_K*self.density_g_per_cm3
     def PrintMetricParameters(self):
         print(self.name)
         print('composition = {}'.format(self.composition))
