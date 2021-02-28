@@ -13,7 +13,7 @@ def GetTemperatureMarker(T): # produces from e.g. T = 599 the string 03 and from
     return '{:02d}'.format((T//300)*3)
 
 # T0 / K ... nuclide temperature for doppler effect in fuel salt
-# T1 / K ... nuclide temperature for doppler effect in all other materials (graphite and steel). 
+# T1 / K ... nuclide temperature for doppler effect in all other materials as well as thermal crosssection library (graphite and steel). 
 # T2 / K ... used for thermal expansion and density change of graphite
 # T3 / K ... used for thermal expansion and density change of steel (hastalloy)
 # T4 / K ... used for density change in fuel salt (excess gets automatically expelled from the core, decreasing the total fuel in the core when heated)
@@ -206,7 +206,7 @@ surf 1237 cyl {:.5f} {:.5f} 2.54""".format(*list(np.array([-5.08, -5.08])*graphi
 surf 1238 cyl {:.5f} {:.5f} 2.54""".format(*list(np.array([5.08, -5.08])*graphite_length_scale_factor)) + """
 
 % top of control rods
-surf 9000 pz 81.28 %150.876
+%surf 9000 pz 81.28 %150.876
 
 % CR surfaces
 surf cr11 cyl 0 0 1.0033
@@ -217,32 +217,32 @@ surf cr14 cyl 0 0 1.4478
 % --- Cells :
 cell 300 0 fill 300 -3000 3003 -3004 2000 2001 2002 2003 % central mod
 cell 401 0 fill 2 -2996 3002 -2995 2000 2001 2002 2003 % upper plenum
-cell 402 0 fill 2 -2996 -3001 -2995 % lower plenum
-cell 404 0 fill 2 3004 -3002 -3000 % between graphite and upper plenum
-cell 405 0 fill 2 3001 -3003 -3000 % between graphite and lower plenum
+cell 402 0 fill 2 -2996 -3001 -2995 2000 2001 2002 2003% lower plenum
+cell 404 0 fill 2 3004 -3002 -3000 2000 2001 2002 2003%1235 1236 1237 1238% between graphite and upper plenum
+cell 405 0 fill 2 3001 -3003 -3000 2000 2001 2002 2003%1235 1236 1237 1238% between graphite and lower plenum
 
 % CR cells
-cell cr21 CR1 fill 6 -cr11 -9000 3001
-cell cr31 CR2 fill 6 -cr11 -9000 3001
-cell cr41 CR3 fill 6 -cr11 -9000 3001
-cell cr22 CR1 fill 4 cr11 -cr12 -9000 3001
-cell cr32 CR2 fill 4 cr11 -cr12 -9000 3001
-cell cr42 CR3 fill 4 cr11 -cr12 -9000 3001
-cell cr23 CR1 fill 5 cr12 -cr13 -9000 3001
-cell cr33 CR2 fill 5 cr12 -cr13 -9000 3001
-cell cr43 CR3 fill 5 cr12 -cr13 -9000 3001
-cell cr24 CR1 fill 4 cr13 -cr14 -9000 3001
-cell cr34 CR2 fill 4 cr13 -cr14 -9000 3001
-cell cr44 CR3 fill 4 cr13 -cr14 -9000 3001
-cell cr25 CR1 fill 6 cr14 -9000 3001
-cell cr35 CR2 fill 6 cr14 -9000 3001
-cell cr45 CR3 fill 6 cr14 -9000 3001
-cell cr26 CR1 fill 6 9000
-cell cr36 CR2 fill 6 9000
-cell cr46 CR3 fill 6 9000
-cell cr27 CR1 fill 6 -3001
-cell cr37 CR2 fill 6 -3001
-cell cr47 CR3 fill 6 -3001
+cell cr21 CR1 fill 6 -cr11 -3004 3003 % 3004 is upper graphite plane, 3003 is lower graphite plane
+cell cr31 CR2 fill 6 -cr11 -3004 3003
+cell cr41 CR3 fill 6 -cr11 -3004 3003
+cell cr22 CR1 fill 4 cr11 -cr12 -3004 3003 % steel
+cell cr32 CR2 fill 4 cr11 -cr12 -3004 3003
+cell cr42 CR3 fill 4 cr11 -cr12 -3004 3003
+cell cr23 CR1 fill 5 cr12 -cr13 -3004 3003 % CR poison
+cell cr33 CR2 fill 5 cr12 -cr13 -3004 3003
+cell cr43 CR3 fill 5 cr12 -cr13 -3004 3003
+cell cr24 CR1 fill 4 cr13 -cr14 -3004 3003
+cell cr34 CR2 fill 4 cr13 -cr14 -3004 3003
+cell cr44 CR3 fill 4 cr13 -cr14 -3004 3003
+cell cr25 CR1 fill 6 cr14 -3004 3003
+cell cr35 CR2 fill 6 cr14 -3004 3003
+cell cr45 CR3 fill 6 cr14 -3004 3003
+cell cr26 CR1 fill 6 3004
+cell cr36 CR2 fill 6 3004
+cell cr46 CR3 fill 6 3004
+cell cr27 CR1 fill 6 -3003
+cell cr37 CR2 fill 6 -3003
+cell cr47 CR3 fill 6 -3003
 
 % CONTROL ROD POSITIONS
 % ordered like quadrants are
@@ -255,26 +255,26 @@ trans CR2 -5.08 5.08 208.0
 trans CR3 -5.08 -5.08 208.0
 
 % approximate the experiment tube as a tube full of graphite
-cell 710 0 fill 3 -1234 %-5000 5001
-cell 711 0 tank 1234 -1238 %-5000 5001
-cell 712 0 fill 2 1238 -2003 %-5000 5001
+cell 710 0 fill 3 -1234 -2995%-5000 5001
+cell 711 0 tank 1234 -1238 -2995%-5000 5001
+cell 712 0 fill 2 1238 -2003 -2995%-5000 5001
 
 % CR 1 guide tube
-cell 1999 0 fill CR1 -1231 %-5000 5001
-cell 1998 0 fill 4 1231 -1235 %-5000 5001
-cell 1997 0 fill 2 1235 -2000 %-5000 5001
+cell 1999 0 fill CR1 -1231 -2995%-5000 5001
+cell 1998 0 fill 4 1231 -1235 -2995%-5000 5001
+cell 1997 0 fill 2 1235 -2000 -2995%-5000 5001
 
 
 % CR 2 guide tube
-cell 1996 0 fill CR2 -1232 %-5000 5001
-cell 1995 0 fill 4 1232 -1236 %-5000 5001
-cell 1994 0 fill 2 1236 -2001 %-5000 5001
+cell 1996 0 fill CR2 -1232 -2995%-5000 5001
+cell 1995 0 fill 4 1232 -1236 -2995%-5000 5001
+cell 1994 0 fill 2 1236 -2001 -2995%-5000 5001
 
 
 % CR 3 guide tube
-cell 1993 0 fill CR3 -1233 %-5000 5001
-cell 1992 0 fill 4 1233 -1237 %-5000 5001
-cell 1991 0 fill 2 1237 -2002 %-5000 5001
+cell 1993 0 fill CR3 -1233 -2995%-5000 5001
+cell 1992 0 fill 4 1233 -1237 -2995%-5000 5001
+cell 1991 0 fill 2 1237 -2002 -2995%-5000 5001
 
 % rest of the vessel + outside
 cell 299 0 fill 2 3000 -2999 3001 -3002 % fuel around mod , between downcomer
@@ -311,6 +311,9 @@ set pop 10000 5000 200 %50000 600 100
 plot 1 1500 1500
 plot 2 1500 1500
 plot 3 1500 1500
+plot 2 1500 1500 5.08
+plot 2 1500 1500 -5.08
+plot 3 1500 1500 0 -20 20 -20 20
 mesh 1 1500 1500
 mesh 2 1500 1500
 mesh 3 1500 1500
@@ -361,4 +364,4 @@ if __name__ == "__main__":
     T2 = T0 # 273.15    # K
     T3 = T0 # 273.15+21 # K
     T4 = T0 # 273.15    # K
-    GenerateFile(T0,T1,T2,T3,T4,folder_name = 'serpent_data')
+    GenerateFile(T0,T1,T2,T3,T4,folder_name = 'plot_through_rod')
