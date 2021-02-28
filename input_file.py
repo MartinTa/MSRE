@@ -179,7 +179,7 @@ surf 2997 cyl 0.0 0.0 {:.5f} % vessel ID""".format(73.66*steel_length_scale_fact
 surf 2996 cyl 0.0 0.0 {:.5f} % vessel OD""".format(75.08875*steel_length_scale_factor) + """
 surf 2995 sph 0.0 0.0 0 {:.5f} % vessel lid ID, rough geometry""".format(109.6915*steel_length_scale_factor) + """
 surf 2994 sph 0.0 0.0 0 {:.5f} % vessel lid OD, rough geometry""".format(110.6560*steel_length_scale_factor) + """
-surf 2993 sph 0.0 0.0 0 {:.5f} % dummy outer surface """.format(220*steel_length_scale_factor) + """
+%surf 2993 sph 0.0 0.0 0 {:.5f} % dummy outer surface """.format(220*steel_length_scale_factor) + """
 surf 3001 pz {:.5f}""".format(-81.28*steel_length_scale_factor) + """
 surf 3002 pz {:.5f}""".format(81.28*steel_length_scale_factor) + """
 surf 3003 pz {:.5f}""".format(-80.645*graphite_length_scale_factor) + """
@@ -196,14 +196,14 @@ surf 2002 cyl  {:.5f} {:.5f} {:.5f}""".format(*list(np.array([-5.08, -5.08, 3])*
 surf 2003 cyl {:.5f} {:.5f} {:.5f}""".format(*list(np.array([5.08, -5.08, 3])*graphite_length_scale_factor)) + """
 
 % CR / experiment tubes
-surf 1231 cyl {:.5f} {:.5f} 2.413 %1/20 inconel , approximate as hastelloy""".format(*list(np.array([5.08, 5.08])*graphite_length_scale_factor)) + """
-surf 1232 cyl {:.5f} {:.5f} 2.413""".format(*list(np.array([-5.08, 5.08])*graphite_length_scale_factor)) + """
-surf 1233 cyl {:.5f} {:.5f} 2.413""".format(*list(np.array([-5.08, -5.08])*graphite_length_scale_factor)) + """
-surf 1234 cyl {:.5f} {:.5f} 2.413""".format(*list(np.array([5.08, -5.08])*graphite_length_scale_factor)) + """
-surf 1235 cyl {:.5f} {:.5f} 2.54 %1/20 inconel , approximate as hastelloy""".format(*list(np.array([5.08,5.08])*graphite_length_scale_factor)) + """
-surf 1236 cyl {:.5f} {:.5f} 2.54""".format(*list(np.array([-5.08, 5.08])*graphite_length_scale_factor)) + """
-surf 1237 cyl {:.5f} {:.5f} 2.54""".format(*list(np.array([-5.08, -5.08])*graphite_length_scale_factor)) + """
-surf 1238 cyl {:.5f} {:.5f} 2.54""".format(*list(np.array([5.08, -5.08])*graphite_length_scale_factor)) + """
+surf 1231 cyl {:.5f} {:.5f} 2.413 %1/20 inconel , approximate as hastelloy""".format(*list(np.array([5.08, 5.08])*steel_length_scale_factor)) + """
+surf 1232 cyl {:.5f} {:.5f} 2.413""".format(*list(np.array([-5.08, 5.08])*steel_length_scale_factor)) + """
+surf 1233 cyl {:.5f} {:.5f} 2.413""".format(*list(np.array([-5.08, -5.08])*steel_length_scale_factor)) + """
+surf 1234 cyl {:.5f} {:.5f} 2.413""".format(*list(np.array([5.08, -5.08])*steel_length_scale_factor)) + """
+surf 1235 cyl {:.5f} {:.5f} 2.54 %1/20 inconel , approximate as hastelloy""".format(*list(np.array([5.08,5.08])*steel_length_scale_factor)) + """
+surf 1236 cyl {:.5f} {:.5f} 2.54""".format(*list(np.array([-5.08, 5.08])*steel_length_scale_factor)) + """
+surf 1237 cyl {:.5f} {:.5f} 2.54""".format(*list(np.array([-5.08, -5.08])*steel_length_scale_factor)) + """
+surf 1238 cyl {:.5f} {:.5f} 2.54""".format(*list(np.array([5.08, -5.08])*steel_length_scale_factor)) + """
 
 % top of control rods
 %surf 9000 pz 81.28 %150.876
@@ -285,9 +285,9 @@ cell 295 0 fill 4 2995 -2994 3002 % upper vessel lid7
 cell 29 0 fill 4 2995 -2994 -3001 % upper vessel lid
 
 %cell 403 0 outside 2994 : 2996 % outside sphere and outside cylinder (union operator :)
-cell 403 0 outside 2994 -2993
+cell 403 0 outside 2994 %-2993
 cell 301 0 outside 2996 -2994
-cell 999 0 outside 2993
+%cell 999 0 outside 2993
 
 % --- Cross section data library file path :
 set acelib "/codes/SERPENT/xsdata/endfb7.xsdata" %"endfb7u.xsdata"
