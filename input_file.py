@@ -25,6 +25,7 @@ def GetInputStr(T0,T1,T2,T3,T4):
     graphite_density_scale_factor = 1/graphite_length_scale_factor**3
     steel_density_scale_factor = 1/steel_length_scale_factor**3
     fuel_density_scale_factor = 1/fuel_length_scale_factor**3
+    print(f'fuel density scale factor = {fuel_density_scale_factor:.8f}')
     
     T0_marker = GetTemperatureMarker(T0)
     T1_marker = GetTemperatureMarker(T1)
@@ -305,7 +306,7 @@ set nfg 4 7.3000e-7 2.9023e-5 9.1188e-3
 % set nfg 4 1.8554e-6 2.9023e-5 9.1188e-3
 
 % --- Neutron population and criticality cycles :
-set pop 10000 5000 200 %50000 600 100
+set pop 10000 2000 100 %10000 5000 200 %50000 600 100
 
 % --- Geometry and mesh plots :
 plot 1 1500 1500
@@ -343,6 +344,277 @@ ene MyEnergyGrid 3 500 1e-11 2e1
 
 set bc 1
 set his 1
+
+set xsplot 10000 1e-9 20
+
+sens opt egrid myGrid
+
+ene myGrid 1 1e-11 2e1
+set xsplot 10000 1e-9 20
+
+% --- Neutron and event buffer sizes
+
+set nbuf 3 3
+
+% --- Number of latent generations to use
+
+sens opt latgen 14
+%sens opt history 1
+sens opt direct 0.20
+
+% --- The response we are interested in is k-effective
+
+sens resp keff
+sens opt history yes
+
+sens pert custom i92235_09c_1 efunc i92235_09c_1.txt zailist 922350 matlist fuel mtlist 1
+sens pert custom i92235_09c_101 efunc i92235_09c_101.txt zailist 922350 matlist fuel mtlist 101
+sens pert custom i92235_09c_2 efunc i92235_09c_2.txt zailist 922350 matlist fuel mtlist 2
+sens pert custom i92235_09c_18 efunc i92235_09c_18.txt zailist 922350 matlist fuel mtlist 18
+sens pert custom i92235_09c_102 efunc i92235_09c_102.txt zailist 922350 matlist fuel mtlist 102
+sens pert custom i92235_09c_51 efunc i92235_09c_51.txt zailist 922350 matlist fuel mtlist 51
+sens pert custom i92235_09c_52 efunc i92235_09c_52.txt zailist 922350 matlist fuel mtlist 52
+sens pert custom i92235_09c_53 efunc i92235_09c_53.txt zailist 922350 matlist fuel mtlist 53
+sens pert custom i92235_09c_54 efunc i92235_09c_54.txt zailist 922350 matlist fuel mtlist 54
+sens pert custom i92235_09c_55 efunc i92235_09c_55.txt zailist 922350 matlist fuel mtlist 55
+sens pert custom i92235_09c_56 efunc i92235_09c_56.txt zailist 922350 matlist fuel mtlist 56
+sens pert custom i92235_09c_57 efunc i92235_09c_57.txt zailist 922350 matlist fuel mtlist 57
+sens pert custom i92235_09c_58 efunc i92235_09c_58.txt zailist 922350 matlist fuel mtlist 58
+sens pert custom i92235_09c_59 efunc i92235_09c_59.txt zailist 922350 matlist fuel mtlist 59
+sens pert custom i92235_09c_60 efunc i92235_09c_60.txt zailist 922350 matlist fuel mtlist 60
+sens pert custom i92235_09c_61 efunc i92235_09c_61.txt zailist 922350 matlist fuel mtlist 61
+sens pert custom i92235_09c_62 efunc i92235_09c_62.txt zailist 922350 matlist fuel mtlist 62
+sens pert custom i92235_09c_63 efunc i92235_09c_63.txt zailist 922350 matlist fuel mtlist 63
+sens pert custom i92235_09c_64 efunc i92235_09c_64.txt zailist 922350 matlist fuel mtlist 64
+sens pert custom i92235_09c_65 efunc i92235_09c_65.txt zailist 922350 matlist fuel mtlist 65
+sens pert custom i92235_09c_66 efunc i92235_09c_66.txt zailist 922350 matlist fuel mtlist 66
+sens pert custom i92235_09c_91 efunc i92235_09c_91.txt zailist 922350 matlist fuel mtlist 91
+sens pert custom i92235_09c_67 efunc i92235_09c_67.txt zailist 922350 matlist fuel mtlist 67
+sens pert custom i92235_09c_68 efunc i92235_09c_68.txt zailist 922350 matlist fuel mtlist 68
+sens pert custom i92235_09c_69 efunc i92235_09c_69.txt zailist 922350 matlist fuel mtlist 69
+sens pert custom i92235_09c_70 efunc i92235_09c_70.txt zailist 922350 matlist fuel mtlist 70
+sens pert custom i92235_09c_71 efunc i92235_09c_71.txt zailist 922350 matlist fuel mtlist 71
+sens pert custom i92235_09c_72 efunc i92235_09c_72.txt zailist 922350 matlist fuel mtlist 72
+sens pert custom i92235_09c_73 efunc i92235_09c_73.txt zailist 922350 matlist fuel mtlist 73
+sens pert custom i92235_09c_74 efunc i92235_09c_74.txt zailist 922350 matlist fuel mtlist 74
+sens pert custom i92235_09c_75 efunc i92235_09c_75.txt zailist 922350 matlist fuel mtlist 75
+sens pert custom i92235_09c_76 efunc i92235_09c_76.txt zailist 922350 matlist fuel mtlist 76
+sens pert custom i92235_09c_77 efunc i92235_09c_77.txt zailist 922350 matlist fuel mtlist 77
+sens pert custom i92235_09c_78 efunc i92235_09c_78.txt zailist 922350 matlist fuel mtlist 78
+sens pert custom i92235_09c_79 efunc i92235_09c_79.txt zailist 922350 matlist fuel mtlist 79
+sens pert custom i92235_09c_80 efunc i92235_09c_80.txt zailist 922350 matlist fuel mtlist 80
+sens pert custom i92235_09c_81 efunc i92235_09c_81.txt zailist 922350 matlist fuel mtlist 81
+sens pert custom i92235_09c_82 efunc i92235_09c_82.txt zailist 922350 matlist fuel mtlist 82
+sens pert custom i92235_09c_83 efunc i92235_09c_83.txt zailist 922350 matlist fuel mtlist 83
+sens pert custom i92235_09c_84 efunc i92235_09c_84.txt zailist 922350 matlist fuel mtlist 84
+sens pert custom i92235_09c_85 efunc i92235_09c_85.txt zailist 922350 matlist fuel mtlist 85
+sens pert custom i92235_09c_86 efunc i92235_09c_86.txt zailist 922350 matlist fuel mtlist 86
+sens pert custom i92235_09c_87 efunc i92235_09c_87.txt zailist 922350 matlist fuel mtlist 87
+sens pert custom i92235_09c_88 efunc i92235_09c_88.txt zailist 922350 matlist fuel mtlist 88
+sens pert custom i92235_09c_89 efunc i92235_09c_89.txt zailist 922350 matlist fuel mtlist 89
+sens pert custom i92235_09c_90 efunc i92235_09c_90.txt zailist 922350 matlist fuel mtlist 90
+sens pert custom i92235_09c_16 efunc i92235_09c_16.txt zailist 922350 matlist fuel mtlist 16
+sens pert custom i92235_09c_17 efunc i92235_09c_17.txt zailist 922350 matlist fuel mtlist 17
+sens pert custom i92235_09c_37 efunc i92235_09c_37.txt zailist 922350 matlist fuel mtlist 37
+sens pert custom i92238_09c_1 efunc i92238_09c_1.txt zailist 922380 matlist fuel mtlist 1
+sens pert custom i92238_09c_101 efunc i92238_09c_101.txt zailist 922380 matlist fuel mtlist 101
+sens pert custom i92238_09c_2 efunc i92238_09c_2.txt zailist 922380 matlist fuel mtlist 2
+sens pert custom i92238_09c_18 efunc i92238_09c_18.txt zailist 922380 matlist fuel mtlist 18
+sens pert custom i92238_09c_102 efunc i92238_09c_102.txt zailist 922380 matlist fuel mtlist 102
+sens pert custom i92238_09c_51 efunc i92238_09c_51.txt zailist 922380 matlist fuel mtlist 51
+sens pert custom i92238_09c_52 efunc i92238_09c_52.txt zailist 922380 matlist fuel mtlist 52
+sens pert custom i92238_09c_53 efunc i92238_09c_53.txt zailist 922380 matlist fuel mtlist 53
+sens pert custom i92238_09c_54 efunc i92238_09c_54.txt zailist 922380 matlist fuel mtlist 54
+sens pert custom i92238_09c_55 efunc i92238_09c_55.txt zailist 922380 matlist fuel mtlist 55
+sens pert custom i92238_09c_56 efunc i92238_09c_56.txt zailist 922380 matlist fuel mtlist 56
+sens pert custom i92238_09c_57 efunc i92238_09c_57.txt zailist 922380 matlist fuel mtlist 57
+sens pert custom i92238_09c_58 efunc i92238_09c_58.txt zailist 922380 matlist fuel mtlist 58
+sens pert custom i92238_09c_59 efunc i92238_09c_59.txt zailist 922380 matlist fuel mtlist 59
+sens pert custom i92238_09c_60 efunc i92238_09c_60.txt zailist 922380 matlist fuel mtlist 60
+sens pert custom i92238_09c_61 efunc i92238_09c_61.txt zailist 922380 matlist fuel mtlist 61
+sens pert custom i92238_09c_62 efunc i92238_09c_62.txt zailist 922380 matlist fuel mtlist 62
+sens pert custom i92238_09c_63 efunc i92238_09c_63.txt zailist 922380 matlist fuel mtlist 63
+sens pert custom i92238_09c_64 efunc i92238_09c_64.txt zailist 922380 matlist fuel mtlist 64
+sens pert custom i92238_09c_65 efunc i92238_09c_65.txt zailist 922380 matlist fuel mtlist 65
+sens pert custom i92238_09c_66 efunc i92238_09c_66.txt zailist 922380 matlist fuel mtlist 66
+sens pert custom i92238_09c_67 efunc i92238_09c_67.txt zailist 922380 matlist fuel mtlist 67
+sens pert custom i92238_09c_68 efunc i92238_09c_68.txt zailist 922380 matlist fuel mtlist 68
+sens pert custom i92238_09c_69 efunc i92238_09c_69.txt zailist 922380 matlist fuel mtlist 69
+sens pert custom i92238_09c_70 efunc i92238_09c_70.txt zailist 922380 matlist fuel mtlist 70
+sens pert custom i92238_09c_71 efunc i92238_09c_71.txt zailist 922380 matlist fuel mtlist 71
+sens pert custom i92238_09c_91 efunc i92238_09c_91.txt zailist 922380 matlist fuel mtlist 91
+sens pert custom i92238_09c_72 efunc i92238_09c_72.txt zailist 922380 matlist fuel mtlist 72
+sens pert custom i92238_09c_73 efunc i92238_09c_73.txt zailist 922380 matlist fuel mtlist 73
+sens pert custom i92238_09c_74 efunc i92238_09c_74.txt zailist 922380 matlist fuel mtlist 74
+sens pert custom i92238_09c_75 efunc i92238_09c_75.txt zailist 922380 matlist fuel mtlist 75
+sens pert custom i92238_09c_76 efunc i92238_09c_76.txt zailist 922380 matlist fuel mtlist 76
+sens pert custom i92238_09c_77 efunc i92238_09c_77.txt zailist 922380 matlist fuel mtlist 77
+sens pert custom i92238_09c_78 efunc i92238_09c_78.txt zailist 922380 matlist fuel mtlist 78
+sens pert custom i92238_09c_79 efunc i92238_09c_79.txt zailist 922380 matlist fuel mtlist 79
+sens pert custom i92238_09c_80 efunc i92238_09c_80.txt zailist 922380 matlist fuel mtlist 80
+sens pert custom i92238_09c_81 efunc i92238_09c_81.txt zailist 922380 matlist fuel mtlist 81
+sens pert custom i92238_09c_82 efunc i92238_09c_82.txt zailist 922380 matlist fuel mtlist 82
+sens pert custom i92238_09c_83 efunc i92238_09c_83.txt zailist 922380 matlist fuel mtlist 83
+sens pert custom i92238_09c_84 efunc i92238_09c_84.txt zailist 922380 matlist fuel mtlist 84
+sens pert custom i92238_09c_85 efunc i92238_09c_85.txt zailist 922380 matlist fuel mtlist 85
+
+sens pert custom i92238_09c_86 efunc i92238_09c_86.txt zailist 922380 matlist fuel mtlist 86
+sens pert custom i92238_09c_87 efunc i92238_09c_87.txt zailist 922380 matlist fuel mtlist 87
+sens pert custom i92238_09c_88 efunc i92238_09c_88.txt zailist 922380 matlist fuel mtlist 88
+sens pert custom i92238_09c_89 efunc i92238_09c_89.txt zailist 922380 matlist fuel mtlist 89
+sens pert custom i92238_09c_90 efunc i92238_09c_90.txt zailist 922380 matlist fuel mtlist 90
+sens pert custom i92238_09c_16 efunc i92238_09c_16.txt zailist 922380 matlist fuel mtlist 16
+sens pert custom i92238_09c_17 efunc i92238_09c_17.txt zailist 922380 matlist fuel mtlist 17
+sens pert custom i92238_09c_37 efunc i92238_09c_37.txt zailist 922380 matlist fuel mtlist 37
+sens pert custom i3007_09c_1 efunc i3007_09c_1.txt zailist 30070 matlist fuel mtlist 1
+sens pert custom i3007_09c_101 efunc i3007_09c_101.txt zailist 30070 matlist fuel mtlist 101
+sens pert custom i3007_09c_2 efunc i3007_09c_2.txt zailist 30070 matlist fuel mtlist 2
+sens pert custom i3007_09c_102 efunc i3007_09c_102.txt zailist 30070 matlist fuel mtlist 102
+sens pert custom i3007_09c_51 efunc i3007_09c_51.txt zailist 30070 matlist fuel mtlist 51
+sens pert custom i3007_09c_52 efunc i3007_09c_52.txt zailist 30070 matlist fuel mtlist 52
+sens pert custom i3007_09c_53 efunc i3007_09c_53.txt zailist 30070 matlist fuel mtlist 53
+sens pert custom i3007_09c_54 efunc i3007_09c_54.txt zailist 30070 matlist fuel mtlist 54
+sens pert custom i3007_09c_55 efunc i3007_09c_55.txt zailist 30070 matlist fuel mtlist 55
+sens pert custom i3007_09c_56 efunc i3007_09c_56.txt zailist 30070 matlist fuel mtlist 56
+sens pert custom i3007_09c_57 efunc i3007_09c_57.txt zailist 30070 matlist fuel mtlist 57
+sens pert custom i3007_09c_58 efunc i3007_09c_58.txt zailist 30070 matlist fuel mtlist 58
+sens pert custom i3007_09c_59 efunc i3007_09c_59.txt zailist 30070 matlist fuel mtlist 59
+sens pert custom i3007_09c_60 efunc i3007_09c_60.txt zailist 30070 matlist fuel mtlist 60
+sens pert custom i3007_09c_61 efunc i3007_09c_61.txt zailist 30070 matlist fuel mtlist 61
+sens pert custom i3007_09c_62 efunc i3007_09c_62.txt zailist 30070 matlist fuel mtlist 62
+sens pert custom i3007_09c_16 efunc i3007_09c_16.txt zailist 30070 matlist fuel mtlist 16
+sens pert custom i3007_09c_63 efunc i3007_09c_63.txt zailist 30070 matlist fuel mtlist 63
+sens pert custom i3007_09c_104 efunc i3007_09c_104.txt zailist 30070 matlist fuel mtlist 104
+sens pert custom i3007_09c_64 efunc i3007_09c_64.txt zailist 30070 matlist fuel mtlist 64
+sens pert custom i3007_09c_24 efunc i3007_09c_24.txt zailist 30070 matlist fuel mtlist 24
+sens pert custom i3007_09c_65 efunc i3007_09c_65.txt zailist 30070 matlist fuel mtlist 65
+sens pert custom i3007_09c_66 efunc i3007_09c_66.txt zailist 30070 matlist fuel mtlist 66
+sens pert custom i3007_09c_67 efunc i3007_09c_67.txt zailist 30070 matlist fuel mtlist 67
+sens pert custom i3007_09c_68 efunc i3007_09c_68.txt zailist 30070 matlist fuel mtlist 68
+sens pert custom i3007_09c_69 efunc i3007_09c_69.txt zailist 30070 matlist fuel mtlist 69
+sens pert custom i3007_09c_25 efunc i3007_09c_25.txt zailist 30070 matlist fuel mtlist 25
+sens pert custom i3007_09c_70 efunc i3007_09c_70.txt zailist 30070 matlist fuel mtlist 70
+sens pert custom i3007_09c_71 efunc i3007_09c_71.txt zailist 30070 matlist fuel mtlist 71
+sens pert custom i3007_09c_72 efunc i3007_09c_72.txt zailist 30070 matlist fuel mtlist 72
+sens pert custom i3007_09c_73 efunc i3007_09c_73.txt zailist 30070 matlist fuel mtlist 73
+sens pert custom i3007_09c_74 efunc i3007_09c_74.txt zailist 30070 matlist fuel mtlist 74
+sens pert custom i3007_09c_75 efunc i3007_09c_75.txt zailist 30070 matlist fuel mtlist 75
+sens pert custom i3007_09c_76 efunc i3007_09c_76.txt zailist 30070 matlist fuel mtlist 76
+sens pert custom i3007_09c_77 efunc i3007_09c_77.txt zailist 30070 matlist fuel mtlist 77
+sens pert custom i3007_09c_78 efunc i3007_09c_78.txt zailist 30070 matlist fuel mtlist 78
+sens pert custom i3007_09c_79 efunc i3007_09c_79.txt zailist 30070 matlist fuel mtlist 79
+sens pert custom i3007_09c_80 efunc i3007_09c_80.txt zailist 30070 matlist fuel mtlist 80
+sens pert custom i3007_09c_81 efunc i3007_09c_81.txt zailist 30070 matlist fuel mtlist 81
+sens pert custom i3007_09c_82 efunc i3007_09c_82.txt zailist 30070 matlist fuel mtlist 82
+sens pert custom i3006_09c_1 efunc i3006_09c_1.txt zailist 30060 matlist fuel mtlist 1
+sens pert custom i3006_09c_101 efunc i3006_09c_101.txt zailist 30060 matlist fuel mtlist 101
+sens pert custom i3006_09c_2 efunc i3006_09c_2.txt zailist 30060 matlist fuel mtlist 2
+sens pert custom i3006_09c_102 efunc i3006_09c_102.txt zailist 30060 matlist fuel mtlist 102
+sens pert custom i3006_09c_105 efunc i3006_09c_105.txt zailist 30060 matlist fuel mtlist 105
+sens pert custom i3006_09c_51 efunc i3006_09c_51.txt zailist 30060 matlist fuel mtlist 51
+sens pert custom i3006_09c_52 efunc i3006_09c_52.txt zailist 30060 matlist fuel mtlist 52
+sens pert custom i3006_09c_53 efunc i3006_09c_53.txt zailist 30060 matlist fuel mtlist 53
+sens pert custom i3006_09c_54 efunc i3006_09c_54.txt zailist 30060 matlist fuel mtlist 54
+sens pert custom i3006_09c_103 efunc i3006_09c_103.txt zailist 30060 matlist fuel mtlist 103
+sens pert custom i3006_09c_55 efunc i3006_09c_55.txt zailist 30060 matlist fuel mtlist 55
+sens pert custom i3006_09c_56 efunc i3006_09c_56.txt zailist 30060 matlist fuel mtlist 56
+sens pert custom i3006_09c_57 efunc i3006_09c_57.txt zailist 30060 matlist fuel mtlist 57
+sens pert custom i3006_09c_24 efunc i3006_09c_24.txt zailist 30060 matlist fuel mtlist 24
+sens pert custom i3006_09c_58 efunc i3006_09c_58.txt zailist 30060 matlist fuel mtlist 58
+sens pert custom i3006_09c_59 efunc i3006_09c_59.txt zailist 30060 matlist fuel mtlist 59
+sens pert custom i3006_09c_60 efunc i3006_09c_60.txt zailist 30060 matlist fuel mtlist 60
+sens pert custom i3006_09c_61 efunc i3006_09c_61.txt zailist 30060 matlist fuel mtlist 61
+sens pert custom i3006_09c_62 efunc i3006_09c_62.txt zailist 30060 matlist fuel mtlist 62
+sens pert custom i3006_09c_63 efunc i3006_09c_63.txt zailist 30060 matlist fuel mtlist 63
+sens pert custom i3006_09c_64 efunc i3006_09c_64.txt zailist 30060 matlist fuel mtlist 64
+sens pert custom i3006_09c_65 efunc i3006_09c_65.txt zailist 30060 matlist fuel mtlist 65
+sens pert custom i3006_09c_66 efunc i3006_09c_66.txt zailist 30060 matlist fuel mtlist 66
+sens pert custom i3006_09c_67 efunc i3006_09c_67.txt zailist 30060 matlist fuel mtlist 67
+sens pert custom i3006_09c_68 efunc i3006_09c_68.txt zailist 30060 matlist fuel mtlist 68
+sens pert custom i3006_09c_69 efunc i3006_09c_69.txt zailist 30060 matlist fuel mtlist 69
+sens pert custom i3006_09c_70 efunc i3006_09c_70.txt zailist 30060 matlist fuel mtlist 70
+sens pert custom i3006_09c_71 efunc i3006_09c_71.txt zailist 30060 matlist fuel mtlist 71
+sens pert custom i3006_09c_72 efunc i3006_09c_72.txt zailist 30060 matlist fuel mtlist 72
+sens pert custom i3006_09c_73 efunc i3006_09c_73.txt zailist 30060 matlist fuel mtlist 73
+sens pert custom i3006_09c_74 efunc i3006_09c_74.txt zailist 30060 matlist fuel mtlist 74
+sens pert custom i3006_09c_75 efunc i3006_09c_75.txt zailist 30060 matlist fuel mtlist 75
+sens pert custom i3006_09c_76 efunc i3006_09c_76.txt zailist 30060 matlist fuel mtlist 76
+sens pert custom i3006_09c_77 efunc i3006_09c_77.txt zailist 30060 matlist fuel mtlist 77
+sens pert custom i3006_09c_78 efunc i3006_09c_78.txt zailist 30060 matlist fuel mtlist 78
+sens pert custom i3006_09c_79 efunc i3006_09c_79.txt zailist 30060 matlist fuel mtlist 79
+sens pert custom i3006_09c_80 efunc i3006_09c_80.txt zailist 30060 matlist fuel mtlist 80
+sens pert custom i3006_09c_81 efunc i3006_09c_81.txt zailist 30060 matlist fuel mtlist 81
+sens pert custom i4009_09c_1 efunc i4009_09c_1.txt zailist 40090 matlist fuel mtlist 1
+sens pert custom i4009_09c_101 efunc i4009_09c_101.txt zailist 40090 matlist fuel mtlist 101
+sens pert custom i4009_09c_2 efunc i4009_09c_2.txt zailist 40090 matlist fuel mtlist 2
+sens pert custom i4009_09c_102 efunc i4009_09c_102.txt zailist 40090 matlist fuel mtlist 102
+sens pert custom i4009_09c_107 efunc i4009_09c_107.txt zailist 40090 matlist fuel mtlist 107
+sens pert custom i4009_09c_16 efunc i4009_09c_16.txt zailist 40090 matlist fuel mtlist 16
+sens pert custom i4009_09c_105 efunc i4009_09c_105.txt zailist 40090 matlist fuel mtlist 105
+sens pert custom i4009_09c_103 efunc i4009_09c_103.txt zailist 40090 matlist fuel mtlist 103
+sens pert custom i4009_09c_104 efunc i4009_09c_104.txt zailist 40090 matlist fuel mtlist 104
+sens pert custom i40000_09c_1 efunc i40000_09c_1.txt zailist 400000 matlist fuel mtlist 1
+sens pert custom i40000_09c_101 efunc i40000_09c_101.txt zailist 400000 matlist fuel mtlist 101
+
+sens pert custom i40000_09c_2 efunc i40000_09c_2.txt zailist 400000 matlist fuel mtlist 2
+sens pert custom i40000_09c_102 efunc i40000_09c_102.txt zailist 400000 matlist fuel mtlist 102
+sens pert custom i40000_09c_51 efunc i40000_09c_51.txt zailist 400000 matlist fuel mtlist 51
+sens pert custom i40000_09c_52 efunc i40000_09c_52.txt zailist 400000 matlist fuel mtlist 52
+sens pert custom i40000_09c_53 efunc i40000_09c_53.txt zailist 400000 matlist fuel mtlist 53
+sens pert custom i40000_09c_54 efunc i40000_09c_54.txt zailist 400000 matlist fuel mtlist 54
+sens pert custom i40000_09c_55 efunc i40000_09c_55.txt zailist 400000 matlist fuel mtlist 55
+sens pert custom i40000_09c_56 efunc i40000_09c_56.txt zailist 400000 matlist fuel mtlist 56
+sens pert custom i40000_09c_57 efunc i40000_09c_57.txt zailist 400000 matlist fuel mtlist 57
+sens pert custom i40000_09c_58 efunc i40000_09c_58.txt zailist 400000 matlist fuel mtlist 58
+sens pert custom i40000_09c_59 efunc i40000_09c_59.txt zailist 400000 matlist fuel mtlist 59
+sens pert custom i40000_09c_60 efunc i40000_09c_60.txt zailist 400000 matlist fuel mtlist 60
+sens pert custom i40000_09c_61 efunc i40000_09c_61.txt zailist 400000 matlist fuel mtlist 61
+sens pert custom i40000_09c_62 efunc i40000_09c_62.txt zailist 400000 matlist fuel mtlist 62
+sens pert custom i40000_09c_63 efunc i40000_09c_63.txt zailist 400000 matlist fuel mtlist 63
+sens pert custom i40000_09c_64 efunc i40000_09c_64.txt zailist 400000 matlist fuel mtlist 64
+sens pert custom i40000_09c_65 efunc i40000_09c_65.txt zailist 400000 matlist fuel mtlist 65
+sens pert custom i40000_09c_66 efunc i40000_09c_66.txt zailist 400000 matlist fuel mtlist 66
+sens pert custom i40000_09c_68 efunc i40000_09c_68.txt zailist 400000 matlist fuel mtlist 68
+sens pert custom i40000_09c_69 efunc i40000_09c_69.txt zailist 400000 matlist fuel mtlist 69
+sens pert custom i40000_09c_91 efunc i40000_09c_91.txt zailist 400000 matlist fuel mtlist 91
+sens pert custom i40000_09c_67 efunc i40000_09c_67.txt zailist 400000 matlist fuel mtlist 67
+sens pert custom i40000_09c_103 efunc i40000_09c_103.txt zailist 400000 matlist fuel mtlist 103
+sens pert custom i40000_09c_107 efunc i40000_09c_107.txt zailist 400000 matlist fuel mtlist 107
+sens pert custom i40000_09c_16 efunc i40000_09c_16.txt zailist 400000 matlist fuel mtlist 16
+sens pert custom i9019_09c_1 efunc i9019_09c_1.txt zailist 90190 matlist fuel mtlist 1
+sens pert custom i9019_09c_101 efunc i9019_09c_101.txt zailist 90190 matlist fuel mtlist 101
+sens pert custom i9019_09c_2 efunc i9019_09c_2.txt zailist 90190 matlist fuel mtlist 2
+sens pert custom i9019_09c_102 efunc i9019_09c_102.txt zailist 90190 matlist fuel mtlist 102
+sens pert custom i9019_09c_51 efunc i9019_09c_51.txt zailist 90190 matlist fuel mtlist 51
+sens pert custom i9019_09c_52 efunc i9019_09c_52.txt zailist 90190 matlist fuel mtlist 52
+sens pert custom i9019_09c_53 efunc i9019_09c_53.txt zailist 90190 matlist fuel mtlist 53
+sens pert custom i9019_09c_54 efunc i9019_09c_54.txt zailist 90190 matlist fuel mtlist 54
+sens pert custom i9019_09c_107 efunc i9019_09c_107.txt zailist 90190 matlist fuel mtlist 107
+sens pert custom i9019_09c_55 efunc i9019_09c_55.txt zailist 90190 matlist fuel mtlist 55
+sens pert custom i9019_09c_56 efunc i9019_09c_56.txt zailist 90190 matlist fuel mtlist 56
+sens pert custom i9019_09c_57 efunc i9019_09c_57.txt zailist 90190 matlist fuel mtlist 57
+sens pert custom i9019_09c_58 efunc i9019_09c_58.txt zailist 90190 matlist fuel mtlist 58
+sens pert custom i9019_09c_22 efunc i9019_09c_22.txt zailist 90190 matlist fuel mtlist 22
+sens pert custom i9019_09c_59 efunc i9019_09c_59.txt zailist 90190 matlist fuel mtlist 59
+sens pert custom i9019_09c_103 efunc i9019_09c_103.txt zailist 90190 matlist fuel mtlist 103
+sens pert custom i9019_09c_60 efunc i9019_09c_60.txt zailist 90190 matlist fuel mtlist 60
+sens pert custom i9019_09c_61 efunc i9019_09c_61.txt zailist 90190 matlist fuel mtlist 61
+sens pert custom i9019_09c_62 efunc i9019_09c_62.txt zailist 90190 matlist fuel mtlist 62
+sens pert custom i9019_09c_63 efunc i9019_09c_63.txt zailist 90190 matlist fuel mtlist 63
+sens pert custom i9019_09c_64 efunc i9019_09c_64.txt zailist 90190 matlist fuel mtlist 64
+sens pert custom i9019_09c_65 efunc i9019_09c_65.txt zailist 90190 matlist fuel mtlist 65
+sens pert custom i9019_09c_66 efunc i9019_09c_66.txt zailist 90190 matlist fuel mtlist 66
+sens pert custom i9019_09c_67 efunc i9019_09c_67.txt zailist 90190 matlist fuel mtlist 67
+sens pert custom i9019_09c_68 efunc i9019_09c_68.txt zailist 90190 matlist fuel mtlist 68
+sens pert custom i9019_09c_69 efunc i9019_09c_69.txt zailist 90190 matlist fuel mtlist 69
+sens pert custom i9019_09c_70 efunc i9019_09c_70.txt zailist 90190 matlist fuel mtlist 70
+sens pert custom i9019_09c_71 efunc i9019_09c_71.txt zailist 90190 matlist fuel mtlist 71
+sens pert custom i9019_09c_91 efunc i9019_09c_91.txt zailist 90190 matlist fuel mtlist 91
+sens pert custom i9019_09c_104 efunc i9019_09c_104.txt zailist 90190 matlist fuel mtlist 104
+sens pert custom i9019_09c_28 efunc i9019_09c_28.txt zailist 90190 matlist fuel mtlist 28
+sens pert custom i9019_09c_105 efunc i9019_09c_105.txt zailist 90190 matlist fuel mtlist 105
+sens pert custom i9019_09c_16 efunc i9019_09c_16.txt zailist 90190 matlist fuel mtlist 16
+
 """
     return input_file_str
 
@@ -360,8 +632,16 @@ def GenerateFile(T0,T1,T2,T3,T4,folder_name):
 
 if __name__ == "__main__":
     T0 = 900
-    T1 = T0       # K # 273.15 #
-    T2 = T0 # 273.15    # K
-    T3 = T0 # 273.15+21 # K
-    T4 = T0 # 273.15    # K
-    GenerateFile(T0,T1,T2,T3,T4,folder_name = 'plot_through_rod')
+    T1 = 900       # K # 273.15 #
+    T2 = T1 # 273.15    # K
+    T3 = T1 # 273.15+21 # K
+    T4 = T1 # 273.15    # K
+    # GenerateFile(T0,T1,T2,T3,T4,folder_name = 'temp')
+    # GenerateFile(T0,T1,T2,T3,950,folder_name = 'temp')
+    
+    # s900 = 1.00517279
+    # s950 = 0.99348347
+    
+    # dc_c = (s950-s900)/s900
+    # dk_k = -5.6E-5
+    # ratio = dk_k/dc_c
